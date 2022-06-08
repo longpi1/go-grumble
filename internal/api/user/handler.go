@@ -97,11 +97,7 @@ func (h *handler) Delete() {
 	}
 	if choice == "Y" || choice == "y" {
 		//调用
-		if 	h.userService.Delete(id) {
-			fmt.Println("----------删除成功----------")
-		} else {
-			fmt.Println("-----删除失败,ID不存在------")
-		}
+		h.userService.Delete(id)
 	}
 
 

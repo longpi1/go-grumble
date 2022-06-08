@@ -16,7 +16,7 @@ type Service interface {
 	Modify(id int, userDate  *user.UserData)
 	List() (listData []*user.User)
 	Delete(id int) (flag  bool )
-	Search(id int) (info *user.User)
+	Search(id int) (info user.User)
 }
 
 func New() Service {

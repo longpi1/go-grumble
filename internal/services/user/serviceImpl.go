@@ -55,12 +55,8 @@ func (s *service)  Modify(id int,userDate *user.UserData) {
 }
 
 
-func (s *service)  Search(id int) (info *user.User) {
-    if(id >= 0){
-    	return UserById[id]
-	}
-
-	return nil
+func (s *service)  Search(id int) (info user.User) {
+    	return *UserById[id]
 }
 
 func (s *service)  List() (listInfo []*user.User) {

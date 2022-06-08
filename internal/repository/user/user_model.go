@@ -17,7 +17,7 @@ type User struct {
 
 //返回客户的信息
 func (this User) GetInfo() string {
-	info := fmt.Sprintf("%v\t%v\t%v\t%v\t%v\t%v\t", this.Id, this.Name, this.StartTime,
+	info := fmt.Sprintf("lptest%v\t%v\t%v\t%v\t%v\t%v\t", this.Id, this.Name, this.StartTime,
 		this.Department, this.Position)
 	return info
 }
