@@ -1,15 +1,12 @@
-package  main
+package main
 
 import (
 	"fmt"
 	"go-web/internal/api/user"
 )
 
-
-
-
-func veiw(){
-    handler :=user.New()
+func veiw() {
+	handler := user.New()
 	for {
 		fmt.Println("------员工信息管理系统------")
 		fmt.Println("        1 添加员工")
@@ -19,7 +16,7 @@ func veiw(){
 		fmt.Println("        5 查找员工")
 		fmt.Println("        6 退出软件")
 		fmt.Print("请选择（1-5）..")
-		key :=""
+		key := ""
 		fmt.Scanln(&key)
 		switch key {
 		case "1":
@@ -43,5 +40,5 @@ func veiw(){
 
 func main() {
 	fmt.Println("员工信息管理系统开发..")
-   veiw()
+	veiw()
 }

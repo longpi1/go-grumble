@@ -4,14 +4,14 @@ import (
 	"fmt"
 )
 
-// User  
-//go:generate gormgen -structs User -input . 
+// User
+//go:generate gormgen -structs User -input .
 type User struct {
-	Id int //员工id
-	Name string //名称
-	StartTime string  // 入职时间
+	Id         int    //员工id
+	Name       string //名称
+	StartTime  string // 入职时间
 	Department string // 部门
-	Position string // 职位
+	Position   string // 职位
 }
 
 //返回员工的信息
@@ -20,4 +20,3 @@ func (user User) GetInfo() string {
 		user.Department, user.Position)
 	return info
 }
-

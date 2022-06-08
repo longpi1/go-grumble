@@ -7,23 +7,21 @@ import (
 var _ Service = (*service)(nil)
 
 type service struct {
-	user  []user.User
+	user       []user.User
 	customerId int
 }
 
 type Service interface {
 	i()
-	Create( userDate  *user.UserData)
-	Modify(id int, userDate  *user.UserData) bool
+	Create(userDate *user.UserData)
+	Modify(id int, userDate *user.UserData) bool
 	List() (listData []user.User)
-	Delete(id int) (flag  bool )
+	Delete(id int) (flag bool)
 	SearchById(id int) (info user.User)
 }
 
 func New() Service {
-	return &service{
-
-	}
+	return &service{}
 }
 
 func (s *service) i() {}

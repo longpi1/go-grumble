@@ -31,7 +31,6 @@ type Handler interface {
 	Modify()
 }
 
-
 func New() Handler {
 	return &handler{
 		userService: user.New(),
@@ -53,9 +52,9 @@ func (h *handler) Create() {
 	position := ""
 	fmt.Scanln(&position)
 
-	user := user2.NewUserDate(name,startTime,department,position)
+	user := user2.NewUserDate(name, startTime, department, position)
 
-    h.userService.Create(&user)
+	h.userService.Create(&user)
 }
 
 func (h *handler) Search() {
@@ -91,17 +90,16 @@ func (h *handler) Delete() {
 		//调用
 		if h.userService.Delete(id) {
 			fmt.Println("----------删除成功----------")
-		}else {
+		} else {
 			fmt.Println("-----删除失败,ID不存在------")
 		}
 	}
-
 
 }
 
 func (h *handler) List() {
 	//获取切片中员工信息
-	user :=	h.userService.List()
+	user := h.userService.List()
 	fmt.Println("----------列表----------")
 	fmt.Println("工号\t姓名\t入职时间\t部门\t职位")
 	//对员工信息进行遍历
@@ -133,14 +131,13 @@ func (h *handler) Modify() {
 	position := ""
 	fmt.Scanln(&position)
 
-	user := user2.NewUserDate(name,startTime,department,position)
+	user := user2.NewUserDate(name, startTime, department, position)
 
 	if h.userService.Modify(id, &user) {
 		fmt.Println("----------修改成功----------")
-	}else {
+	} else {
 		fmt.Println("----------修改失败----------")
 	}
 }
-
 
 func (h *handler) i() {}

@@ -4,45 +4,41 @@ import (
 	"go-web/internal/repository/user"
 )
 
-
-func (s *service)  Create(userDate *user.UserData)  {
+func (s *service) Create(userDate *user.UserData) {
 	user := user.User{
-		Name:   userDate.Name,
-		StartTime: userDate.StartTime,
-		Department:   userDate.Department ,
-		Position:  userDate.Position,
+		Name:       userDate.Name,
+		StartTime:  userDate.StartTime,
+		Department: userDate.Department,
+		Position:   userDate.Position,
 	}
-	s.customerId ++
-	user.Id=s.customerId
-	s.user=append(s.user,user)
+	s.customerId++
+	user.Id = s.customerId
+	s.user = append(s.user, user)
 }
 
-
-
-func (s *service)  Delete(id int) (flag bool){
-	employees :=s.SearchById(id)
-	if(employees == user.User{}){
+func (s *service) Delete(id int) (flag bool) {
+	employees := s.SearchById(id)
+	if (employees == user.User{}) {
 		return false
 	}
 	s.user = append(s.user[:employees.Id-1], s.user[employees.Id:]...)
 	return true
 }
 
-func (s *service)  Modify(id int,userDate *user.UserData) bool  {
-	employees :=s.SearchById(id)
-	if(employees == user.User{}){
+func (s *service) Modify(id int, userDate *user.UserData) bool {
+	employees := s.SearchById(id)
+	if (employees == user.User{}) {
 		return false
 	}
 	employees.Name = userDate.Name
-	employees.Department=userDate.Department
-	employees.Position=userDate.Position
-	employees.StartTime=userDate.StartTime
-	s.user = append(append(s.user[:employees.Id-1],employees), s.user[employees.Id:]...)
+	employees.Department = userDate.Department
+	employees.Position = userDate.Position
+	employees.StartTime = userDate.StartTime
+	s.user = append(append(s.user[:employees.Id-1], employees), s.user[employees.Id:]...)
 	return true
 }
 
-
-func (s *service)  SearchById(id int) (info user.User) {
+func (s *service) SearchById(id int) (info user.User) {
 	index := -1
 	for i := 0; i < len(s.user); i++ {
 		if s.user[i].Id == id {
@@ -55,8 +51,6 @@ func (s *service)  SearchById(id int) (info user.User) {
 	return
 }
 
-func (s *service)  List() (listInfo []user.User) {
+func (s *service) List() (listInfo []user.User) {
 	return s.user
 }
-
-
