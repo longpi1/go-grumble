@@ -5,67 +5,58 @@ import (
 )
 
 
-
-
-var UserById = make(map[int]*user.User)
-var UserByName = make(map[string][]*user.User)
-
-func (s *service)  Create(userDate *user.UserData) (err error) {
+func (s *service)  Create(userDate *user.UserData)  {
 	user := user.User{
-		Id: userDate.Id,
 		Name:   userDate.Name,
 		StartTime: userDate.StartTime,
 		Department:   userDate.Department ,
 		Position:  userDate.Position,
 	}
-	if err := checkUserById(userDate.Id); err != nil {
-		return err
-	}else{
-		store(&user)
-	}
-	return nil
+	s.customerId ++
+	user.Id=s.customerId
+	s.user=append(s.user,user)
 }
 
-func store(user *user.User) {
-	UserById[user.Id] = user // 按照 id 存储
-	UserByName[user.Name] = append(UserByName[user.Name], user) // 按照客户名存储
-}
-
-func checkUserById(id int) (err error){
-	if UserById[id]!=nil {
-		return err
-	}else {
-		return nil
-	}
-}
 
 
 func (s *service)  Delete(id int) (flag bool){
-	delete(UserById,id)
-	return flag
-}
-
-func (s *service)  Modify(id int,userDate *user.UserData) {
-	user :=UserById[id]
-	user.Name = userDate.Name
-	user.Department=userDate.Department
-	user.Position=userDate.Position
-	user.StartTime=userDate.StartTime
-    store(user)
-}
-
-
-func (s *service)  Search(id int) (info *user.User) {
-    if(id >= 0){
-    	return UserById[id]
+	employees :=s.SearchById(id)
+	if(employees == user.User{}){
+		return false
 	}
-
-	return nil
+	s.user = append(s.user[:employees.Id-1], s.user[employees.Id:]...)
+	return true
 }
 
-func (s *service)  List() (listInfo []*user.User) {
-	listInfo = make([]*user.User, len(UserById))
-	return listInfo
+func (s *service)  Modify(id int,userDate *user.UserData) bool  {
+	employees :=s.SearchById(id)
+	if(employees == user.User{}){
+		return false
+	}
+	employees.Name = userDate.Name
+	employees.Department=userDate.Department
+	employees.Position=userDate.Position
+	employees.StartTime=userDate.StartTime
+	s.user = append(append(s.user[:employees.Id-1],employees), s.user[employees.Id:]...)
+	return true
+}
+
+
+func (s *service)  SearchById(id int) (info user.User) {
+	index := -1
+	for i := 0; i < len(s.user); i++ {
+		if s.user[i].Id == id {
+			index = i
+		}
+	}
+	if index != -1 {
+		return s.user[index]
+	}
+	return
+}
+
+func (s *service)  List() (listInfo []user.User) {
+	return s.user
 }
 
 
