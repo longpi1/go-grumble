@@ -60,12 +60,16 @@ func (h *handler) Create() {
 func (h *handler) Search() {
 	fmt.Println("----------查找员工----------")
 	fmt.Print("请选择查找员工的编号（-1退出）：")
+	fmt.Println("----------列表----------")
+	fmt.Println("工号\t姓名\t入职时间\t部门\t职位")
 	id := -1
 	fmt.Scanln(&id)
 	if id == -1 {
 		return
 	}
-	fmt.Printf(h.userService.SearchById(id).GetInfo())
+	if !h.userService.SearchById(id) {
+		fmt.Println("        用户不存在")
+	}
 }
 
 func (h *handler) Delete() {
@@ -119,7 +123,6 @@ func (h *handler) Modify() {
 	fmt.Print("姓名：")
 	name := ""
 	fmt.Scanln(&name)
-
 	fmt.Print("入职时间：")
 	startTime := ""
 	fmt.Scanln(&startTime)
@@ -135,7 +138,7 @@ func (h *handler) Modify() {
 	if h.userService.Modify(id, &userDate) {
 		fmt.Println("----------修改成功----------")
 	} else {
-		fmt.Println("----------修改失败----------")
+		fmt.Println("----------修改失败,ID不存在----------")
 	}
 }
 

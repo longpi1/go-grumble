@@ -20,9 +20,9 @@ type Service interface {
 	//遍历员工
 	List() (listData []user.User)
 	//删除员工
-	Delete(id int) (flag bool)
+	Delete(id int) bool
 	//根据id搜索员工
-	SearchById(id int) (info user.User)
+	SearchById(id int) bool
 }
 
 func New() Service {
