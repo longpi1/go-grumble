@@ -4,8 +4,7 @@ import (
 	"fmt"
 )
 
-// User
-//go:generate gormgen -structs User -input .
+// 员工实际存储类
 type User struct {
 	Id         int    //员工id
 	Name       string //名称

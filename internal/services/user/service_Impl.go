@@ -5,15 +5,15 @@ import (
 )
 
 func (s *service) Create(userDate *user.UserData) {
-	user := user.User{
+	u := user.User{
 		Name:       userDate.Name,
 		StartTime:  userDate.StartTime,
 		Department: userDate.Department,
 		Position:   userDate.Position,
 	}
 	s.customerId++
-	user.Id = s.customerId
-	s.user = append(s.user, user)
+	u.Id = s.customerId
+	s.user = append(s.user, u)
 }
 
 func (s *service) Delete(id int) (flag bool) {
