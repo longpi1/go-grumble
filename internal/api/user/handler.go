@@ -52,9 +52,9 @@ func (h *handler) Create() {
 	position := ""
 	fmt.Scanln(&position)
 
-	user := user2.NewUserDate(name, startTime, department, position)
+	userDate := user2.NewUserDate(name, startTime, department, position)
 
-	h.userService.Create(&user)
+	h.userService.Create(&userDate)
 }
 
 func (h *handler) Search() {
@@ -87,7 +87,6 @@ func (h *handler) Delete() {
 		fmt.Print("你的输入有误，确认是否删除（Y/N）:")
 	}
 	if choice == "Y" || choice == "y" {
-		//调用
 		if h.userService.Delete(id) {
 			fmt.Println("----------删除成功----------")
 		} else {
@@ -99,12 +98,12 @@ func (h *handler) Delete() {
 
 func (h *handler) List() {
 	//获取切片中员工信息
-	user := h.userService.List()
+	userList := h.userService.List()
 	fmt.Println("----------列表----------")
 	fmt.Println("工号\t姓名\t入职时间\t部门\t职位")
 	//对员工信息进行遍历
-	for i := 0; i < len(user); i++ {
-		fmt.Println(user[i].GetInfo())
+	for i := 0; i < len(userList); i++ {
+		fmt.Println(userList[i].GetInfo())
 	}
 
 }
@@ -131,9 +130,9 @@ func (h *handler) Modify() {
 	position := ""
 	fmt.Scanln(&position)
 
-	user := user2.NewUserDate(name, startTime, department, position)
+	userDate := user2.NewUserDate(name, startTime, department, position)
 
-	if h.userService.Modify(id, &user) {
+	if h.userService.Modify(id, &userDate) {
 		fmt.Println("----------修改成功----------")
 	} else {
 		fmt.Println("----------修改失败----------")
