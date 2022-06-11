@@ -7,9 +7,6 @@ import (
 	"go-web/internal/api/user"
 )
 
-
-
-
 //交互式界面函数
 func view() {
 

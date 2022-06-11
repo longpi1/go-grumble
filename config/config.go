@@ -16,10 +16,11 @@ import (
 )
 
 var config = new(Config)
+
 //用于配置环境
 type Config struct {
 	//用于设置日志级别
-	Logger struct{
+	Logger struct {
 		Level int `toml:"level"`
 	}
 }
@@ -59,11 +60,11 @@ func init() {
 	if err := viper.Unmarshal(config); err != nil {
 		panic(err)
 	}
-    //对配置文件名拼接
+	//对配置文件名拼接
 	viper.SetConfigName(env.Active().Value() + "_configs")
 	//添加到启动路径
 	viper.AddConfigPath("./configs")
-   //找到文件路径
+	//找到文件路径
 	configFile := "./configs/" + env.Active().Value() + "_configs.toml"
 	_, ok := file.IsExists(configFile)
 	//如果不存在则创建对应的文件
@@ -82,7 +83,7 @@ func init() {
 			panic(err)
 		}
 	}
-    //监视配置文件，重新读取配置数据
+	//监视配置文件，重新读取配置数据
 	viper.WatchConfig()
 	viper.OnConfigChange(func(e fsnotify.Event) {
 		if err := viper.Unmarshal(config); err != nil {

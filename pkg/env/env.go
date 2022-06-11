@@ -9,7 +9,7 @@ import (
 var (
 	active Environment
 	dev    Environment = &environment{value: "dev"}
-	test    Environment = &environment{value: "test"}
+	test   Environment = &environment{value: "test"}
 	pro    Environment = &environment{value: "pro"}
 )
 
@@ -39,7 +39,6 @@ func (e *environment) IsDev() bool {
 func (e *environment) IsTest() bool {
 	return e.value == "test"
 }
-
 
 func (e *environment) IsPro() bool {
 	return e.value == "pro"

@@ -41,7 +41,6 @@ func New() Handler {
 	}
 }
 
-
 func (h *userHandler) Create() {
 	fmt.Println("----------添加员工----------")
 	fmt.Print("姓名：")
@@ -133,7 +132,7 @@ func (h *userHandler) Modify() {
 	fmt.Print("职位：")
 	position := ""
 	fmt.Scanln(&position)
-    //先用实体类存储数据
+	//先用实体类存储数据
 	userDate := user2.NewUserDate(name, startTime, department, position)
 
 	if h.userService.Modify(id, &userDate) {

@@ -82,7 +82,6 @@ func (c *ReadLineFromEnd) Close() (err error) {
 	return c.f.Close()
 }
 
-
 func (c *ReadLineFromEnd) buff() (ok bool, err error) {
 	if c.fileSize == 0 {
 		return true, nil

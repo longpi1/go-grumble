@@ -9,10 +9,11 @@ var _ Service = (*userService)(nil)
 //定义userService，完成对user的增删查改
 type userService struct {
 	//用户存储的切片
-	userList   []user.User
+	userList []user.User
 	//表示当前切片含有多少个员工，以及作为新员工的id号
 	userId int
 }
+
 //定义用户service层接口
 type Service interface {
 	i()
@@ -33,7 +34,6 @@ type Service interface {
 	// @title    List
 	// @description   遍历员工（支持内容过滤以及排序）
 	List()
-
 
 	// @title    Delete
 	// @description   根据id删除员工信息
