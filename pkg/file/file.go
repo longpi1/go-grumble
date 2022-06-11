@@ -77,10 +77,11 @@ func (c *ReadLineFromEnd) ReadLine() (line []byte, err error) {
 	return line, err
 }
 
-// Close --
+// 关闭Close --
 func (c *ReadLineFromEnd) Close() (err error) {
 	return c.f.Close()
 }
+
 
 func (c *ReadLineFromEnd) buff() (ok bool, err error) {
 	if c.fileSize == 0 {

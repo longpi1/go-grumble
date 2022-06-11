@@ -16,8 +16,9 @@ import (
 )
 
 var config = new(Config)
-
+//用于配置环境
 type Config struct {
+	//用于设置日志级别
 	Logger struct{
 		Level int `toml:"level"`
 	}
@@ -65,6 +66,7 @@ func init() {
    //找到文件路径
 	configFile := "./configs/" + env.Active().Value() + "_configs.toml"
 	_, ok := file.IsExists(configFile)
+	//如果不存在则创建对应的文件
 	if !ok {
 		if err := os.MkdirAll(filepath.Dir(configFile), 0766); err != nil {
 			panic(err)
@@ -89,6 +91,7 @@ func init() {
 	})
 }
 
+//获取config对象
 func Get() Config {
 	return *config
 }
