@@ -4,11 +4,11 @@ import (
 	"go-web/internal/repository/user"
 )
 
-var _ Service = (*service)(nil)
+var _ Service = (*userService)(nil)
 
-type service struct {
-	user       []user.User
-	customerId int
+type userService struct {
+	user   []user.User
+	userId int
 }
 
 type Service interface {
@@ -18,7 +18,7 @@ type Service interface {
 	//修改员工
 	Modify(id int, userDate *user.UserData) bool
 	//遍历员工
-	List() (listData []user.User)
+	List()
 	//删除员工
 	Delete(id int) bool
 	//根据id搜索员工
@@ -26,7 +26,7 @@ type Service interface {
 }
 
 func New() Service {
-	return &service{}
+	return &userService{}
 }
 
-func (s *service) i() {}
+func (s *userService) i() {}
