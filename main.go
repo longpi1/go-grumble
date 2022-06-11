@@ -2,10 +2,17 @@ package main
 
 import (
 	"fmt"
+	"github.com/sirupsen/logrus"
+	configs "go-web/config"
 	"go-web/internal/api/user"
 )
 
+
+
+
+//交互式界面函数
 func view() {
+
 	//先初始化控制器
 	handler := user.New()
 	for {
@@ -20,21 +27,23 @@ func view() {
 		key := ""
 		fmt.Scanln(&key)
 		switch key {
-		case "1":
+		case configs.AddUser:
 			//创建员工
 			handler.Create()
-		case "2":
-			//更新员工信息
+		case configs.ModifyUser:
+			//根据id更新员工信息
 			handler.Modify()
-		case "3":
+		case configs.DeleteUser:
+			//根据id删除员工
 			handler.Delete()
-		case "4":
+		case configs.UserList:
+			//遍历员工信息
 			handler.List()
-		case "5":
+		case configs.SearchUserById:
 			//根据员工id搜索员工信息
 			handler.Search()
-		case "6":
-			fmt.Println("你已经退出员工信息管理系统账号......")
+		case configs.Exit:
+			logrus.Info("你已经退出员工信息管理系统账号......")
 			return
 		default:
 			fmt.Println("请从（1-6）选择正确的选项： ")
@@ -44,6 +53,9 @@ func view() {
 }
 
 func main() {
-	fmt.Println("员工信息管理系统")
+	//根据你的配置环境设置日志级别
+	logrus.SetLevel(logrus.Level(configs.Get().Logger.Level))
+	logrus.Info("员工信息管理系统启动成功")
+	//交互式界面
 	view()
 }
