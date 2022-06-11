@@ -36,11 +36,11 @@ func (i *item) t() {}
 
 // Format used by go.uber.org/zap in Verbose
 func (i *item) Format(s fmt.State, verb rune) {
-	io.WriteString(s, i.msg)
-	io.WriteString(s, "\n")
+	_, _ = io.WriteString(s, i.msg)
+	_, _ = io.WriteString(s, "\n")
 
 	for _, pc := range i.stack {
-		fmt.Fprintf(s, "%+v\n", errors.Frame(pc))
+		_, _ = fmt.Fprintf(s, "%+v\n", errors.Frame(pc))
 	}
 }
 

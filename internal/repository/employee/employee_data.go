@@ -1,17 +1,16 @@
-package user
+package employee
 
-//数据实体
-type UserData struct {
-	Id         int    //员工id
+//传输的数据实体
+type EmployeeDate struct {
 	Name       string //名称
 	StartTime  string // 入职时间
 	Department string // 部门
 	Position   string // 职位
 }
-
-func NewUserDate(name string, startTime string, department string,
-	position string) UserData {
-	return UserData{
+//构建传输实体
+func NewEmployeeDate(name string, startTime string, department string,
+	position string) EmployeeDate {
+	return EmployeeDate{
 		Name:       name,
 		StartTime:  startTime,
 		Department: department,

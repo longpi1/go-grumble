@@ -1,23 +1,20 @@
 package configs
 
 const (
-	//项目名称
-	ProjectName = "go-web"
-
 	//添加员工
-	AddUser = "1"
+	AddEmployee = "1"
 
 	//修改员工
-	ModifyUser = "2"
+	ModifyEmployee = "2"
 
 	//删除员工
-	DeleteUser = "3"
+	DeleteEmployee = "3"
 
 	//员工列表
-	UserList = "4"
+	EmployeeList = "4"
 
 	//根据id查找员工
-	SearchUserById = "5"
+	SearchEmployeeById = "5"
 
 	//退出系统
 	Exit = "6"

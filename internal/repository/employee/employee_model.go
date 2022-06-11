@@ -1,11 +1,11 @@
-package user
+package employee
 
 import (
 	"fmt"
 )
 
 // 员工实际存储类
-type User struct {
+type Employee struct {
 	Id         int    //员工id
 	Name       string //名称
 	StartTime  string // 入职时间
@@ -14,8 +14,8 @@ type User struct {
 }
 
 //返回员工的信息
-func (user User) GetInfo() string {
-	info := fmt.Sprintf("%v\t%v\t%v\t%v\t%v\t", user.Id, user.Name, user.StartTime,
-		user.Department, user.Position)
+func (employee Employee) GetInfo() string {
+	info := fmt.Sprintf("%v\t%v\t%v\t%v\t%v\t", employee.Id, employee.Name, employee.StartTime,
+		employee.Department, employee.Position)
 	return info
 }

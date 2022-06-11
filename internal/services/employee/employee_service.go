@@ -1,17 +1,17 @@
-package user
+package employee
 
 import (
-	"go-web/internal/repository/user"
+	"go-web/internal/repository/employee"
 )
 
-var _ Service = (*userService)(nil)
+var _ Service = (*employeeService)(nil)
 
-//定义userService，完成对user的增删查改
-type userService struct {
+//定义employeeService，完成对employee的增删查改
+type employeeService struct {
 	//用户存储的切片
-	userList []user.User
+	employeeList []employee.Employee
 	//表示当前切片含有多少个员工，以及作为新员工的id号
-	userId int
+	employeeId int
 }
 
 //定义用户service层接口
@@ -20,16 +20,16 @@ type Service interface {
 
 	// @title    Create
 	// @description   创建员工
-	// @param     userDate        *user.UserData         "员工实体类"
+	// @param     employeeDate        *employee.employeeDate         "员工实体类"
 	// @return    nil
-	Create(userDate *user.UserData)
+	Create(employeeDate *employee.EmployeeDate)
 
 	// @title    Modify
 	// @description   根据id修改员工信息
 	// @param     id        int         "员工Id"
-	// @param     userDate        *user.UserData         "员工实体类"
+	// @param     employeeDate        *employee.employeeDate         "员工实体类"
 	// @return    bool   “表示是否修改成功”
-	Modify(id int, userDate *user.UserData) bool
+	Modify(id int, employeeDate *employee.EmployeeDate) bool
 
 	// @title    List
 	// @description   遍历员工（支持内容过滤以及排序）
@@ -49,7 +49,7 @@ type Service interface {
 }
 
 func New() Service {
-	return &userService{}
+	return &employeeService{}
 }
 
-func (s *userService) i() {}
+func (s *employeeService) i() {}

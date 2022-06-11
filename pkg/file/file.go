@@ -2,7 +2,6 @@ package file
 
 import (
 	"bytes"
-	"fmt"
 	"io"
 	"os"
 )
@@ -29,34 +28,6 @@ func IsExists(path string) (os.FileInfo, bool) {
 	return f, err == nil || os.IsExist(err)
 }
 
-// NewReadLineFromEnd 从末尾读取文件内容
-func NewReadLineFromEnd(filename string) (rd *ReadLineFromEnd, err error) {
-	f, err := os.Open(filename)
-	if err != nil {
-		return nil, err
-	}
-
-	info, err := f.Stat()
-	if err != nil {
-		return nil, err
-	}
-
-	if info.IsDir() {
-		return nil, fmt.Errorf("not file")
-	}
-
-	fileSize := int(info.Size())
-
-	rd = &ReadLineFromEnd{
-		f:        f,
-		fileSize: fileSize,
-		bwr:      bytes.NewBuffer([]byte{}),
-		lineBuff: make([]byte, 0),
-		swapBuff: make([]byte, buffSize),
-		isFirst:  true,
-	}
-	return rd, nil
-}
 
 // ReadLine 结尾包含'\n'
 func (c *ReadLineFromEnd) ReadLine() (line []byte, err error) {

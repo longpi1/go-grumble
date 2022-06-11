@@ -50,9 +50,9 @@ func init() {
 	default:
 		r = bytes.NewReader(testConfigs)
 	}
-
+	//设置配置文件类型
 	viper.SetConfigType("toml")
-
+	//读取配置文件
 	if err := viper.ReadConfig(r); err != nil {
 		panic(err)
 	}
