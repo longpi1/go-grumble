@@ -4,6 +4,7 @@ import (
 	"flag"
 	"fmt"
 	"strings"
+	"testing"
 )
 
 var (
@@ -48,7 +49,11 @@ func (e *environment) t() {}
 
 //初始化时选择对应的环境配置文件
 func init() {
+	//设置对应环境
 	env := flag.String("env", "", "请输入运行环境:\n dev:开发环境\n test:测试环境\n  pro:正式环境\n")
+	//测试时初始化
+	testing.Init()
+	//解析参数
 	flag.Parse()
 
 	switch strings.ToLower(strings.TrimSpace(*env)) {

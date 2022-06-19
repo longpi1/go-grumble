@@ -52,7 +52,7 @@ func view() {
 func main() {
 	//根据你的配置环境设置日志级别
 	logrus.SetLevel(logrus.Level(configs.Get().Logger.Level))
-	logrus.Info("员工信息管理系统启动成功")
+	logrus.Info("员工信息管理系统启动")
 	//交互式界面
 	view()
 }

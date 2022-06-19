@@ -3,7 +3,7 @@ package employee
 import (
 	"fmt"
 	_ "github.com/sirupsen/logrus"
-	configs "go-web/configs"
+	"go-web/configs"
 	"go-web/internal/repository/employee"
 	"sort"
 )
@@ -16,6 +16,10 @@ func (s *employeeService) Create(employeeDate *employee.EmployeeDate) {
 		Department: employeeDate.Department,
 		Position:   employeeDate.Position,
 	}
+	//加锁保证并发性
+	s.RWMutex.RLock()
+	//添加后释放锁
+	defer s.RUnlock()
 	//id自增
 	s.employeeId++
 	u.Id = s.employeeId
@@ -25,6 +29,8 @@ func (s *employeeService) Create(employeeDate *employee.EmployeeDate) {
 
 //根据id删除员工信息
 func (s *employeeService) Delete(id int) bool {
+	s.RWMutex.RLock()
+	defer s.RUnlock()
 	index := s.findById(id)
 	//返回-1则表示员工不存在
 	if index == -1 {
@@ -37,6 +43,8 @@ func (s *employeeService) Delete(id int) bool {
 
 //根据id更新员工信息
 func (s *employeeService) Modify(id int, employeeDate *employee.EmployeeDate) bool {
+	s.RWMutex.RLock()
+	defer s.RUnlock()
 	index := s.findById(id)
 	if index == -1 {
 		//不存在则返回false

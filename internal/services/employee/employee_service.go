@@ -2,12 +2,14 @@ package employee
 
 import (
 	"go-web/internal/repository/employee"
+	"sync"
 )
 
 var _ Service = (*employeeService)(nil)
 
 //定义employeeService，完成对employee的增删查改
 type employeeService struct {
+	sync.RWMutex
 	//用切片对员工信息进行存储
 	employeeList []employee.Employee
 	//表示当前切片含有多少个员工，以及作为新员工的id号
