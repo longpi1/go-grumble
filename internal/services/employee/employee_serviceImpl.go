@@ -3,7 +3,7 @@ package employee
 import (
 	"fmt"
 	_ "github.com/sirupsen/logrus"
-	configs "go-web/config"
+	configs "go-web/configs"
 	"go-web/internal/repository/employee"
 	"sort"
 )

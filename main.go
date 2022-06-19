@@ -3,7 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/sirupsen/logrus"
-	configs "go-web/config"
+	configs "go-web/configs"
 	"go-web/internal/api/employee"
 )
 

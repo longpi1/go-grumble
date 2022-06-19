@@ -89,7 +89,7 @@ func (h *employeeHandler) Delete() {
 		return
 	}
 	if h.employeeService.Delete(id) {
-		logrus.Info("----------删除成功----------")
+		fmt.Println("----------删除成功----------")
 	} else {
 		logrus.Error("----------删除失败,ID不存在----------")
 	}
@@ -136,7 +136,7 @@ func (h *employeeHandler) Modify() {
 	employeeDate := employee2.NewEmployeeDate(name, startTime, department, position)
 
 	if h.employeeService.Modify(id, &employeeDate) {
-		logrus.Info("----------修改成功----------")
+		fmt.Println("----------修改成功----------")
 	} else {
 		logrus.Error("----------修改失败,ID不存在----------")
 	}

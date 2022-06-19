@@ -8,7 +8,7 @@ var _ Service = (*employeeService)(nil)
 
 //定义employeeService，完成对employee的增删查改
 type employeeService struct {
-	//用户存储的切片
+	//用切片对员工信息进行存储
 	employeeList []employee.Employee
 	//表示当前切片含有多少个员工，以及作为新员工的id号
 	employeeId int
@@ -20,14 +20,14 @@ type Service interface {
 
 	// @title    Create
 	// @description   创建员工
-	// @param     employeeDate        *employee.employeeDate         "员工实体类"
+	// @param     employeeDate        *employee.employeeDate         "员工传输类"
 	// @return    nil
 	Create(employeeDate *employee.EmployeeDate)
 
 	// @title    Modify
 	// @description   根据id修改员工信息
 	// @param     id        int         "员工Id"
-	// @param     employeeDate        *employee.employeeDate         "员工实体类"
+	// @param     employeeDate        *employee.employeeDate         "员工传输类"
 	// @return    bool   “表示是否修改成功”
 	Modify(id int, employeeDate *employee.EmployeeDate) bool
 
