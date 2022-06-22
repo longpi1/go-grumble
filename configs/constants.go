@@ -2,22 +2,22 @@ package configs
 
 const (
 	//添加员工
-	AddEmployee = "1"
+	AddEmployee = "add"
 
 	//修改员工
-	ModifyEmployee = "2"
+	ModifyEmployee = "modify"
 
 	//删除员工
-	DeleteEmployee = "3"
+	DeleteEmployee = "del"
 
 	//员工列表
-	EmployeeList = "4"
+	EmployeeList = "list"
 
 	//根据id查找员工
-	SearchEmployeeById = "5"
+	SearchEmployeeById = "search"
 
 	//退出系统
-	Exit = "6"
+	Exit = "exit"
 
 	//按工号排序
 	SortById = 5

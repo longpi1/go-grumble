@@ -23,16 +23,16 @@ type Handler interface {
 	Create()
 
 	// search 通过id获取员工详情
-	Search()
+	Search(id int)
 
-	// Delete 删除员工
-	Delete()
+	// Delete 根据id删除员工
+	Delete(id int)
 
 	// List 返回符合要求的员工列表
-	List()
+	List( args []string)
 
-	// Modify 修改员工信息
-	Modify()
+	// Modify 根据id修改员工信息
+	Modify(id int)
 }
 
 func New() Handler {
@@ -62,32 +62,14 @@ func (h *employeeHandler) Create() {
 
 }
 
-func (h *employeeHandler) Search() {
-	fmt.Println("----------查找员工----------")
-	fmt.Print("请选择查找员工的编号（-1退出）：")
-	//默认为-1
-	id := -1
-	fmt.Scanln(&id)
-	if id == -1 {
-		////没有输入id，则放弃查找
-		return
-	}
+func (h *employeeHandler) Search(id int) {
 	fmt.Println("工号\t姓名\t入职时间\t部门\t职位")
 	if !h.employeeService.SearchById(id) {
 		logrus.Error("----------用户不存在----------")
 	}
 }
 
-func (h *employeeHandler) Delete() {
-	fmt.Println("----------删除员工----------")
-	fmt.Print("请输入你要删除员工的ID(-1退出)：")
-	//默认为-1
-	id := -1
-	fmt.Scanln(&id)
-	if id == -1 {
-		//没有输入id，则放弃删除
-		return
-	}
+func (h *employeeHandler) Delete(id int) {
 	if h.employeeService.Delete(id) {
 		fmt.Println("----------删除成功----------")
 	} else {
@@ -96,7 +78,7 @@ func (h *employeeHandler) Delete() {
 
 }
 
-func (h *employeeHandler) List() {
+func (h *employeeHandler) List(args []string) {
 	fmt.Println("----------列表----------")
 	fmt.Println("工号\t姓名\t入职时间\t部门\t职位")
 	fmt.Println("员工信息类型（支持姓名、部门、职位过滤）：")
@@ -106,20 +88,11 @@ func (h *employeeHandler) List() {
 	fmt.Println("        4 按职位过滤员工信息")
 	fmt.Println("        5 根据员工Id排序")
 	fmt.Println("        6 根据员工入职日期排序")
-
 	h.employeeService.List()
-
 }
 
-func (h *employeeHandler) Modify() {
+func (h *employeeHandler) Modify(id int) {
 	fmt.Println("----------修改员工----------")
-	fmt.Print("请选择修改员工的编号（-1退出）：")
-	id := -1
-	fmt.Scanln(&id)
-	if id == -1 {
-		//没有输入id，则放弃更新
-		return
-	}
 	fmt.Print("姓名：")
 	name := ""
 	fmt.Scanln(&name)
