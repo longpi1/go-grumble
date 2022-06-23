@@ -2,6 +2,7 @@ package employee
 
 import (
 	"fmt"
+	"github.com/desertbit/grumble"
 	"github.com/sirupsen/logrus"
 	employee2 "go-web/internal/repository/employee"
 	"go-web/internal/services/employee"
@@ -20,19 +21,19 @@ type Handler interface {
 	i()
 
 	// Create 创建员工
-	Create()
+	Create(c grumble.Context) error
 
 	// search 通过id获取员工详情
-	Search(id int)
+	Search(c grumble.Context) error
 
 	// Delete 根据id删除员工
-	Delete(id int)
+	Delete(c grumble.Context)
 
 	// List 返回符合要求的员工列表
-	List( args []string)
+	List(c grumble.Context)
 
 	// Modify 根据id修改员工信息
-	Modify(id int)
+	Modify(c grumble.Context)
 }
 
 func New() Handler {
@@ -41,7 +42,7 @@ func New() Handler {
 	}
 }
 
-func (h *employeeHandler) Create() {
+func (h *employeeHandler) Create(c grumble.Context) error{
 	fmt.Println("----------添加员工----------")
 	fmt.Print("姓名：")
 	name := ""
@@ -59,17 +60,21 @@ func (h *employeeHandler) Create() {
 	employeeDate := employee2.NewEmployeeDate(name, startTime, department, position)
 
 	h.employeeService.Create(&employeeDate)
-
+return nil
 }
 
-func (h *employeeHandler) Search(id int) {
+func (h *employeeHandler) Search(c grumble.Context) error {
 	fmt.Println("工号\t姓名\t入职时间\t部门\t职位")
+	id :=c.Flags.Int("id")
 	if !h.employeeService.SearchById(id) {
+
 		logrus.Error("----------用户不存在----------")
 	}
+	return nil
 }
 
-func (h *employeeHandler) Delete(id int) {
+func (h *employeeHandler) Delete(c grumble.Context) {
+	id :=c.Flags.Int("id")
 	if h.employeeService.Delete(id) {
 		fmt.Println("----------删除成功----------")
 	} else {
@@ -78,7 +83,7 @@ func (h *employeeHandler) Delete(id int) {
 
 }
 
-func (h *employeeHandler) List(args []string) {
+func (h *employeeHandler) List(c grumble.Context) {
 	fmt.Println("----------列表----------")
 	fmt.Println("工号\t姓名\t入职时间\t部门\t职位")
 	fmt.Println("员工信息类型（支持姓名、部门、职位过滤）：")
@@ -91,7 +96,7 @@ func (h *employeeHandler) List(args []string) {
 	h.employeeService.List()
 }
 
-func (h *employeeHandler) Modify(id int) {
+func (h *employeeHandler) Modify(c grumble.Context) {
 	fmt.Println("----------修改员工----------")
 	fmt.Print("姓名：")
 	name := ""
@@ -107,7 +112,7 @@ func (h *employeeHandler) Modify(id int) {
 	fmt.Scanln(&position)
 	//先构建员工传输类
 	employeeDate := employee2.NewEmployeeDate(name, startTime, department, position)
-
+	id :=c.Flags.Int("id")
 	if h.employeeService.Modify(id, &employeeDate) {
 		fmt.Println("----------修改成功----------")
 	} else {
