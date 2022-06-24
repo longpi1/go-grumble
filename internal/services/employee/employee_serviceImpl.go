@@ -16,10 +16,6 @@ func (s *employeeService) Create(employeeDate *employee.EmployeeVo) {
 		Department: employeeDate.Department,
 		Position:   employeeDate.Position,
 	}
-	//加锁保证并发性
-	s.RWMutex.RLock()
-	//添加后释放锁
-	defer s.RUnlock()
 	//id自增
 	s.employeeId++
 	u.Id = s.employeeId
@@ -29,8 +25,6 @@ func (s *employeeService) Create(employeeDate *employee.EmployeeVo) {
 
 //根据id删除员工信息
 func (s *employeeService) Delete(id int) bool {
-	s.RWMutex.RLock()
-	defer s.RUnlock()
 	index := s.findById(id)
 	//返回-1则表示员工不存在
 	if index == -1 {
@@ -43,8 +37,6 @@ func (s *employeeService) Delete(id int) bool {
 
 //根据id更新员工信息
 func (s *employeeService) Modify(id int, employeeDate *employee.EmployeeVo) bool {
-	s.RWMutex.RLock()
-	defer s.RUnlock()
 	index := s.findById(id)
 	if index == -1 {
 		//index为-1则表示不存在，返回false
@@ -62,6 +54,7 @@ func (s *employeeService) Modify(id int, employeeDate *employee.EmployeeVo) bool
 
 //根据id搜索员工信息
 func (s *employeeService) SearchById(id int) bool {
+	//默认为-1
 	index := -1
 	for i := 0; i < len(s.employeeList); i++ {
 		if s.employeeList[i].Id == id {
@@ -69,6 +62,8 @@ func (s *employeeService) SearchById(id int) bool {
 		}
 	}
 	if index != -1 {
+		//存在则答应员工信息，返回true
+		fmt.Println("工号\t姓名\t入职时间\t部门\t职位")
 		fmt.Println(s.employeeList[index].GetInfo())
 		return true
 	}
@@ -91,9 +86,8 @@ func (s *employeeService) List(key int, value string) {
 
 //返回所有员工信息
 func (s *employeeService) queryAll() {
-	for i := 0; i < len(s.employeeList); i++ {
-		fmt.Println(s.employeeList[i].GetInfo())
-	}
+	//打印员工信息
+	s.printEmployeeList(s.employeeList)
 }
 
 //返回排序后所有员工信息
@@ -114,14 +108,13 @@ func (s *employeeService) sortByKey(key int) {
 			return ret[i].StartTime < ret[j].StartTime
 		})
 	}
-	for i := 0; i < len(ret); i++ {
-		fmt.Println(ret[i].GetInfo())
-	}
+	//打印员工信息
+	s.printEmployeeList(ret)
 }
 
 //返回过滤后的员工信息
 func (s *employeeService) queryByKey(key int, value string) {
-	ret := make([]employee.Employee, len(s.employeeList))
+	var ret []employee.Employee
 	switch key {
 	//按姓名过滤
 	case configs.QueryByName:
@@ -145,11 +138,10 @@ func (s *employeeService) queryByKey(key int, value string) {
 			}
 		}
 	default:
-		fmt.Println("请输入正确的类型 ")
+		_ = fmt.Errorf("请输入正确的类型:%d", key)
 	}
-	for i := 1; i < len(ret); i++ {
-		fmt.Println(ret[i].GetInfo())
-	}
+	//打印员工信息
+	s.printEmployeeList(ret)
 }
 
 //根据ID查找客户在员工中对应下标，如果没有该员工，返回-1
@@ -162,4 +154,12 @@ func (s *employeeService) findById(id int) int {
 		}
 	}
 	return index
+}
+
+func (s *employeeService) printEmployeeList(employeeList []employee.Employee){
+	fmt.Println("----------员工列表----------")
+	fmt.Println("工号\t姓名\t入职时间\t部门\t职位")
+	for i := 0; i < len(employeeList); i++ {
+		fmt.Println(employeeList[i].GetInfo())
+	}
 }

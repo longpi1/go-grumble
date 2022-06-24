@@ -3,7 +3,6 @@ package employee
 import (
 	"fmt"
 	"github.com/desertbit/grumble"
-	"github.com/sirupsen/logrus"
 	employee2 "go-web/internal/repository/employee"
 	"go-web/internal/services/employee"
 )
@@ -18,8 +17,6 @@ type employeeHandler struct {
 
 //定义员工handler层接口
 type Handler interface {
-	i()
-
 	// Create 创建员工
 	Create(c grumble.Context)
 
@@ -43,7 +40,6 @@ func New() Handler {
 }
 
 func (h *employeeHandler) Create(c grumble.Context) {
-	fmt.Println("----------添加员工----------")
 	name := c.Flags.String("name")
 	startTime := c.Flags.String("startTime")
 	department := c.Flags.String("department")
@@ -54,10 +50,9 @@ func (h *employeeHandler) Create(c grumble.Context) {
 }
 
 func (h *employeeHandler) Search(c grumble.Context) {
-	fmt.Println("工号\t姓名\t入职时间\t部门\t职位")
 	id := c.Flags.Int("id")
 	if !h.employeeService.SearchById(id) {
-		logrus.Error("----------用户不存在----------")
+		_ = fmt.Errorf("用户不存在:%d", id)
 	}
 }
 
@@ -66,21 +61,18 @@ func (h *employeeHandler) Delete(c grumble.Context) {
 	if h.employeeService.Delete(id) {
 		fmt.Println("----------删除成功----------")
 	} else {
-		logrus.Error("----------删除失败,ID不存在----------")
+		_ = fmt.Errorf("删除失败,ID不存在:%d", id)
 	}
 
 }
 
 func (h *employeeHandler) List(c grumble.Context) {
-	fmt.Println("----------员工列表----------")
-	fmt.Println("工号\t姓名\t入职时间\t部门\t职位")
 	key := c.Flags.Int("key")
 	value := c.Flags.String("value")
 	h.employeeService.List(key, value)
 }
 
 func (h *employeeHandler) Modify(c grumble.Context) {
-	fmt.Println("----------修改员工----------")
 	id := c.Flags.Int("id")
 	name := c.Flags.String("name")
 	startTime := c.Flags.String("startTime")
@@ -91,8 +83,8 @@ func (h *employeeHandler) Modify(c grumble.Context) {
 	if h.employeeService.Modify(id, &employeeDate) {
 		fmt.Println("----------修改成功----------")
 	} else {
-		logrus.Error("----------修改失败,ID不存在----------")
+		_ = fmt.Errorf("修改失败,ID不存在:%d", id)
 	}
 }
 
-func (h *employeeHandler) i() {}
+

@@ -5,13 +5,13 @@ import (
 	"github.com/desertbit/grumble"
 	"go-web/configs"
 	"go-web/internal/api/employee"
-	"go-web/pkg/errors"
 	"time"
 )
 
 //先初始化控制器
 var handler = employee.New()
 
+//基础配置
 var Employee = grumble.New(&grumble.Config{
 	Name:  "员工管理系统",
 	Flags: func(f *grumble.Flags) {},
@@ -44,7 +44,8 @@ var delCmd = &grumble.Command{
 		f.Int("i", "id", -1, "员工id")
 	},
 	Run: func(c *grumble.Context) error {
-		if c.Flags.Int("id") == -1 {
+		////判断是否输入员工id
+		if !judgeId(c) {
 			return fmt.Errorf("请输入员工id")
 		}
 		handler.Delete(*c)
@@ -60,7 +61,8 @@ var searchCmd = &grumble.Command{
 		f.Int("i", "id", -1, "员工id")
 	},
 	Run: func(c *grumble.Context) error {
-		if c.Flags.Int("id") == -1 {
+		////判断是否输入员工id
+		if !judgeId(c) {
 			return fmt.Errorf("请输入员工id")
 		}
 		handler.Search(*c)
@@ -79,8 +81,8 @@ var listCmd = &grumble.Command{
 	Run: func(c *grumble.Context) error {
 		key := c.Flags.Int("key")
 		//查看输入的key是否在查找类型范围
-		flag := key <= configs.SortByTime && key >= configs.QueryAll
-		if !flag {
+		isRange := key <= configs.SortByTime && key >= configs.QueryAll
+		if !isRange {
 			return fmt.Errorf("输入的类型错误：%d,请输入（1-6）进行查找", key)
 		}
 		handler.List(*c)
@@ -100,13 +102,21 @@ var modifyCmd = &grumble.Command{
 		f.String("p", "Position", "", "职位")
 	},
 	Run: func(c *grumble.Context) error {
-		if c.Flags.Int("id") == -1 {
-			fmt.Print("请输入员工id")
-			return errors.New("请输入员工id")
+		////判断是否输入员工id
+		if !judgeId(c) {
+			return fmt.Errorf("请输入员工id")
 		}
 		handler.Modify(*c)
 		return nil
 	},
+}
+
+//判断是否输入员工id
+func judgeId(c *grumble.Context) bool {
+	if c.Flags.Int("id") == -1 {
+		return false
+	}
+	return true
 }
 
 func init() {
