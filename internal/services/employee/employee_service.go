@@ -24,18 +24,19 @@ type Service interface {
 	// @description   创建员工
 	// @param     employeeDate        *employee.employeeDate         "员工传输类"
 	// @return    nil
-	Create(employeeDate *employee.EmployeeDate)
+	Create(employeeDate *employee.EmployeeVo)
 
 	// @title    Modify
 	// @description   根据id修改员工信息
 	// @param     id        int         "员工Id"
 	// @param     employeeDate        *employee.employeeDate         "员工传输类"
 	// @return    bool   “表示是否修改成功”
-	Modify(id int, employeeDate *employee.EmployeeDate) bool
+	Modify(id int, employeeDate *employee.EmployeeVo) bool
 
 	// @title    List
+	// @param    key  查找类型 value 查找的值
 	// @description   遍历员工（支持内容过滤以及排序）
-	List()
+	List(key int, value string)
 
 	// @title    Delete
 	// @description   根据id删除员工信息

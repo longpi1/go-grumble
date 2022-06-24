@@ -3,8 +3,8 @@ package configs
 import (
 	"bytes"
 
+	_ "embed"
 	"github.com/fsnotify/fsnotify"
-
 	"go-web/pkg/env"
 	"go-web/pkg/file"
 
@@ -39,7 +39,7 @@ var (
 //选择对应的环境配置文件
 func init() {
 	var r io.Reader
-    //获取当前的环境
+	//获取当前的环境
 	switch env.Active().Value() {
 	case "dev":
 		r = bytes.NewReader(devConfigs)

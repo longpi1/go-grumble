@@ -9,7 +9,7 @@ import (
 )
 
 //创建员工信息，id自增
-func (s *employeeService) Create(employeeDate *employee.EmployeeDate) {
+func (s *employeeService) Create(employeeDate *employee.EmployeeVo) {
 	u := employee.Employee{
 		Name:       employeeDate.Name,
 		StartTime:  employeeDate.StartTime,
@@ -42,12 +42,12 @@ func (s *employeeService) Delete(id int) bool {
 }
 
 //根据id更新员工信息
-func (s *employeeService) Modify(id int, employeeDate *employee.EmployeeDate) bool {
+func (s *employeeService) Modify(id int, employeeDate *employee.EmployeeVo) bool {
 	s.RWMutex.RLock()
 	defer s.RUnlock()
 	index := s.findById(id)
 	if index == -1 {
-		//不存在则返回false
+		//index为-1则表示不存在，返回false
 		return false
 	}
 	//将实体数据传输给存储类
@@ -76,31 +76,21 @@ func (s *employeeService) SearchById(id int) bool {
 }
 
 //遍历员工信息
-func (s *employeeService) List() {
-	fmt.Print("类型：")
-	kind := -1
-	fmt.Scanln(&kind)
-	if kind == -1 {
-		return
-	}
-	if kind == configs.QueryAll {
+func (s *employeeService) List(key int, value string) {
+	if key == configs.QueryAll {
 		//返回所有员工信息
 		s.queryAll()
-	} else if kind == configs.SortById || kind == configs.SortByTime {
+	} else if key == configs.SortById || key == configs.SortByTime {
 		//返回排序后所有员工信息
-		s.sortByKey(kind)
+		s.sortByKey(key)
 	} else {
-		fmt.Print("查找内容：")
-		value := ""
-		fmt.Scanln(&value)
 		//返回过滤后的员工信息
-		s.queryByKey(kind, value)
+		s.queryByKey(key, value)
 	}
 }
 
 //返回所有员工信息
 func (s *employeeService) queryAll() {
-	fmt.Println("工号\t姓名\t入职时间\t部门\t职位")
 	for i := 0; i < len(s.employeeList); i++ {
 		fmt.Println(s.employeeList[i].GetInfo())
 	}
@@ -124,7 +114,6 @@ func (s *employeeService) sortByKey(key int) {
 			return ret[i].StartTime < ret[j].StartTime
 		})
 	}
-	fmt.Println("工号\t姓名\t入职时间\t部门\t职位")
 	for i := 0; i < len(ret); i++ {
 		fmt.Println(ret[i].GetInfo())
 	}
@@ -158,7 +147,6 @@ func (s *employeeService) queryByKey(key int, value string) {
 	default:
 		fmt.Println("请输入正确的类型 ")
 	}
-	fmt.Println("工号\t姓名\t入职时间\t部门\t职位")
 	for i := 1; i < len(ret); i++ {
 		fmt.Println(ret[i].GetInfo())
 	}

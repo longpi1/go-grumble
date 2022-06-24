@@ -28,7 +28,6 @@ func IsExists(path string) (os.FileInfo, bool) {
 	return f, err == nil || os.IsExist(err)
 }
 
-
 // ReadLine 结尾包含'\n'
 func (c *ReadLineFromEnd) ReadLine() (line []byte, err error) {
 	var ok bool
