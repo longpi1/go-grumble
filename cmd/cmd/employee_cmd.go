@@ -19,14 +19,17 @@ var Employee = grumble.New(&grumble.Config{
 
 //添加员工的命令
 var addCmd = &grumble.Command{
+	//指令名称
 	Name: configs.AddEmployee,
 	Help: "添加员工",
+	//相关flag定义
 	Flags: func(f *grumble.Flags) {
-		f.String("t", "startTime", time.Now().String(), "入职时间")
 		f.String("n", "name", "", "名称")
+		f.String("t", "startTime", time.Now().String(), "入职时间")
 		f.String("d", "department", "", "部门")
 		f.String("p", "position", "", "职位")
 	},
+	//运行时调用的方法
 	Run: func(c *grumble.Context) error {
 		return handler.Create(*c)
 	},
@@ -85,8 +88,8 @@ var modifyCmd = &grumble.Command{
 		f.Int("i", "id", -1, "员工id")
 		f.String("t", "startTime", time.Now().String(), "入职时间")
 		f.String("n", "name", "", "名称")
-		f.String("d", "Department", "", "部门")
-		f.String("p", "Position", "", "职位")
+		f.String("d", "department", "", "部门")
+		f.String("p", "position", "", "职位")
 	},
 	Run: func(c *grumble.Context) error {
 		////判断是否输入员工id

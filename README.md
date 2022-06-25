@@ -13,13 +13,14 @@ go结合grumble的交互式员工信息录入程序，实现员工信息的插�
 
 项目目录结构：
 .
+├── cmd                   ## 项目指令相关操作
 ├── configs               ## 配置文件
 ├── internal              ## 业务目录
-│   ├── api               ## api 接口
-│   ├── services          ## 服务
+│   ├── api               ## api接口
+│   ├── services          ## 服务（业务逻辑实现）
 │   └── repository        ## 实体对象
 ├── pkg                   ## 可供外部使用的 package
 │   ├── env               ## 环境
 │   ├── errors            ## 报错
 │   ├── file              ## 文件相关操作
-└── test               ##测试 
+└── docx                  ## 项目相关文档

@@ -10,7 +10,7 @@ import (
 
 //创建员工信息，id自增
 func (s *EmployeeService) Create(employeeDate *employee.EmployeeVo) {
-	u := employee.Employee{
+	user := employee.Employee{
 		Name:       employeeDate.Name,
 		StartTime:  employeeDate.StartTime,
 		Department: employeeDate.Department,
@@ -18,9 +18,9 @@ func (s *EmployeeService) Create(employeeDate *employee.EmployeeVo) {
 	}
 	//id自增
 	s.employeeId++
-	u.Id = s.employeeId
+	user.Id = s.employeeId
 	//添加该用户到切片集合中
-	s.employeeList = append(s.employeeList, u)
+	s.employeeList = append(s.employeeList, user)
 }
 
 //根据id删除员工信息
@@ -64,7 +64,7 @@ func (s *EmployeeService) SearchById(id int) bool {
 		}
 	}
 	if index != -1 {
-		//存在则答应员工信息，返回true
+		//存在则打印员工信息，返回true
 		fmt.Println("工号\t姓名\t入职时间\t部门\t职位")
 		fmt.Println(s.employeeList[index].GetInfo())
 		return true
@@ -158,6 +158,7 @@ func (s *EmployeeService) findById(id int) int {
 	return index
 }
 
+//打印员工信息
 func (s *EmployeeService) printEmployeeList(employeeList []employee.Employee){
 	fmt.Println("----------员工列表----------")
 	fmt.Println("工号\t姓名\t入职时间\t部门\t职位")

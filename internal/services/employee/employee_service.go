@@ -18,19 +18,19 @@ type EmployeeService struct {
 type Service interface {
 	// @title    Create
 	// @description   创建员工
-	// @param     employeeDate        *employee.employeeDate         "员工传输类"
-	// @return    nil
+	// @param     employeeDate        *employee.EmployeeVo         "员工传输对象"
 	Create(employeeDate *employee.EmployeeVo)
 
 	// @title    Modify
 	// @description   根据id修改员工信息
 	// @param     id        int         "员工Id"
-	// @param     employeeDate        *employee.employeeDate         "员工传输类"
+	// @param     employeeDate        *employee.EmployeeVo         "员工传输对象"
 	// @return    bool   “表示是否修改成功”
 	Modify(id int, employeeDate *employee.EmployeeVo) bool
 
 	// @title    List
-	// @param    key  查找类型 value 查找的值
+	// @param    key  查找类型
+	// @param   value 查找的值
 	// @description   遍历员工（支持内容过滤以及排序）
 	List(key int, value string)
 

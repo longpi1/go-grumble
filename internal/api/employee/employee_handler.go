@@ -63,7 +63,7 @@ func (h *employeeHandler) Create(c grumble.Context)  error{
 func (h *employeeHandler) Search(c grumble.Context) error{
 	id := c.Flags.Int("id")
 	if !h.employeeService.SearchById(id) {
-		return fmt.Errorf("用户不存在:%d", id)
+		return fmt.Errorf("该用户不存在，id:%d", id)
 	}
 	return nil
 }
@@ -71,7 +71,7 @@ func (h *employeeHandler) Search(c grumble.Context) error{
 func (h *employeeHandler) Delete(c grumble.Context) error{
 	id := c.Flags.Int("id")
 	if !h.employeeService.Delete(id) {
-		return fmt.Errorf("删除失败,ID不存在:%d", id)
+		return fmt.Errorf("删除失败,id:%d不存在", id)
 	}
     return nil
 }
@@ -97,7 +97,7 @@ func (h *employeeHandler) Modify(c grumble.Context) error{
 	//先构建员工传输对象
 	employeeDate := employee2.NewEmployeeVo(name, startTime, department, position)
 	if !h.employeeService.Modify(id, &employeeDate) {
-		return fmt.Errorf("修改失败,ID不存在:%d", id)
+		return fmt.Errorf("修改失败,id:%d不存在", id)
 	}
 	return nil
 }
