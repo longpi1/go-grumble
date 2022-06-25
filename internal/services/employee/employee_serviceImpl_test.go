@@ -6,6 +6,8 @@ import (
 	"testing"
 )
 //测试创建service对象
+//@param 构建初始化的service对象
+//判断是否相等
 func TestNew(t *testing.T) {
 	tests := []struct {
 		name string
@@ -13,7 +15,7 @@ func TestNew(t *testing.T) {
 	}{
 		{
 			"test",
-			&employeeService{
+			&EmployeeService{
 				nil,
 				0,
 			},
@@ -29,6 +31,8 @@ func TestNew(t *testing.T) {
 }
 
 //测试按id搜索
+//@param 构建员工实体类 员工id
+//判断是否相等
 func Test_employeeService_SearchById(t *testing.T) {
 	type fields struct {
 		employeeList []employee.Employee
@@ -58,7 +62,7 @@ func Test_employeeService_SearchById(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &employeeService{
+			s := &EmployeeService{
 				employeeList: tt.fields.employeeList,
 				employeeId:   tt.fields.employeeId,
 			}
@@ -71,6 +75,8 @@ func Test_employeeService_SearchById(t *testing.T) {
 
 
 //测试修改员工信息
+//@param 构建员工实体类 员工id
+//判断是否相等
 func Test_employeeService_Modify(t *testing.T) {
 	type fields struct {
 		employeeList []employee.Employee
@@ -89,19 +95,19 @@ func Test_employeeService_Modify(t *testing.T) {
 		{
 			name:   "test",
 			fields: fields{[]employee.Employee{{1,"2022-01-22","test", "test", "test"}},1},
-			args:   args{id: 1, employeeDate: &employee.EmployeeVo{"test","2022-01-22", "test", "test"}},
+			args:   args{id: 1, employeeDate: &employee.EmployeeVo{Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}},
 			want:   true,
 		},
 		{
 			name:   "test",
 			fields: fields{[]employee.Employee{{1,"2022-01-22","test", "test", "test"}},1},
-			args:   args{2,&employee.EmployeeVo{"test","2022-01-22", "test", "test"}},
+			args:   args{id: 2, employeeDate: &employee.EmployeeVo{Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}},
 			want:   false,
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &employeeService{
+			s := &EmployeeService{
 				employeeList: tt.fields.employeeList,
 				employeeId:   tt.fields.employeeId,
 			}
@@ -114,6 +120,8 @@ func Test_employeeService_Modify(t *testing.T) {
 
 
 //测试创建员工
+//@param 构建员工实体类
+//判断员工是否递增
 func Test_employeeService_Create(t *testing.T) {
 	type fields struct {
 		employeeList []employee.Employee
@@ -130,12 +138,12 @@ func Test_employeeService_Create(t *testing.T) {
 		{
 			name:   "test",
 			fields: fields{[]employee.Employee{{1,"test","2022-01-22", "test", "test"}},1},
-			args:   args{&employee.EmployeeVo{"test","2022-01-22", "test", "test"}},
+			args:   args{employeeDate: &employee.EmployeeVo{Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &employeeService{
+			s := &EmployeeService{
 				employeeList: tt.fields.employeeList,
 				employeeId:   tt.fields.employeeId,
 			}
@@ -148,6 +156,8 @@ func Test_employeeService_Create(t *testing.T) {
 }
 
 //测试按id删除员工信息
+//@param 构建员工id
+//判断是否删除
 func Test_employeeService_Delete(t *testing.T) {
 	type fields struct {
 		employeeList []employee.Employee
@@ -177,7 +187,7 @@ func Test_employeeService_Delete(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &employeeService{
+			s := &EmployeeService{
 				employeeList: tt.fields.employeeList,
 				employeeId:   tt.fields.employeeId,
 			}
@@ -188,7 +198,9 @@ func Test_employeeService_Delete(t *testing.T) {
 	}
 }
 
-////测试按类型过滤员工列表
+//测试按类型过滤员工列表
+//@param 构建不同的key
+//判断输出是否相同
 func Test_employeeService_List(t *testing.T) {
 	type fields struct {
 		employeeList []employee.Employee
@@ -250,7 +262,7 @@ func Test_employeeService_List(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := &employeeService{
+			s := &EmployeeService{
 				employeeList: tt.fields.employeeList,
 				employeeId:   tt.fields.employeeId,
 			}

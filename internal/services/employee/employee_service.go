@@ -4,10 +4,10 @@ import (
 	"go-web/internal/repository/employee"
 )
 
-var _ Service = (*employeeService)(nil)
+var _ Service = (*EmployeeService)(nil)
 
 //定义employeeService，完成对employee的增删查改
-type employeeService struct {
+type EmployeeService struct {
 	//用切片对员工信息进行存储
 	employeeList []employee.Employee
 	//表示当前切片含有多少个员工，以及作为新员工的id号
@@ -48,7 +48,7 @@ type Service interface {
 }
 
 func New() Service {
-	return &employeeService{}
+	return &EmployeeService{}
 }
 
 

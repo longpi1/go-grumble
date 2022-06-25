@@ -17,7 +17,7 @@ var Employee = grumble.New(&grumble.Config{
 	Flags: func(f *grumble.Flags) {},
 })
 
-//添加的命令
+//添加员工的命令
 var addCmd = &grumble.Command{
 	Name: configs.AddEmployee,
 	Help: "添加员工",
@@ -28,15 +28,11 @@ var addCmd = &grumble.Command{
 		f.String("p", "position", "", "职位")
 	},
 	Run: func(c *grumble.Context) error {
-		if c.Flags.String("name") == "" {
-			return fmt.Errorf("请输入员工名称")
-		}
-		handler.Create(*c)
-		return nil
+		return handler.Create(*c)
 	},
 }
 
-//删除的命令
+//删除员工的命令
 var delCmd = &grumble.Command{
 	Name: configs.DeleteEmployee,
 	Help: "按照id删除员工信息",
@@ -48,12 +44,11 @@ var delCmd = &grumble.Command{
 		if !judgeId(c) {
 			return fmt.Errorf("请输入员工id")
 		}
-		handler.Delete(*c)
-		return nil
+		return handler.Delete(*c)
 	},
 }
 
-//搜索的命令
+//搜索员工的命令
 var searchCmd = &grumble.Command{
 	Name: configs.SearchEmployeeById,
 	Help: "按照id搜索员工",
@@ -65,12 +60,11 @@ var searchCmd = &grumble.Command{
 		if !judgeId(c) {
 			return fmt.Errorf("请输入员工id")
 		}
-		handler.Search(*c)
-		return nil
+		return handler.Search(*c)
 	},
 }
 
-//列表的命令
+//查看列表的命令
 var listCmd = &grumble.Command{
 	Name: configs.EmployeeList,
 	Help: "查看员工列表",
@@ -79,24 +73,17 @@ var listCmd = &grumble.Command{
 		f.String("v", "value", "", "查找内容")
 	},
 	Run: func(c *grumble.Context) error {
-		key := c.Flags.Int("key")
-		//查看输入的key是否在查找类型范围
-		isRange := key <= configs.SortByTime && key >= configs.QueryAll
-		if !isRange {
-			return fmt.Errorf("输入的类型错误：%d,请输入（1-6）进行查找", key)
-		}
-		handler.List(*c)
-		return nil
+		return handler.List(*c)
 	},
 }
 
-//修改的命令
+//修改员工信息的命令
 var modifyCmd = &grumble.Command{
 	Name: configs.ModifyEmployee,
 	Help: "按照id修改员工信息",
 	Flags: func(f *grumble.Flags) {
 		f.Int("i", "id", -1, "员工id")
-		f.String("t", "time", time.Now().String(), "入职时间")
+		f.String("t", "startTime", time.Now().String(), "入职时间")
 		f.String("n", "name", "", "名称")
 		f.String("d", "Department", "", "部门")
 		f.String("p", "Position", "", "职位")
@@ -106,8 +93,7 @@ var modifyCmd = &grumble.Command{
 		if !judgeId(c) {
 			return fmt.Errorf("请输入员工id")
 		}
-		handler.Modify(*c)
-		return nil
+		return handler.Modify(*c)
 	},
 }
 
