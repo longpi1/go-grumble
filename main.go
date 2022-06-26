@@ -3,7 +3,7 @@ package main
 import (
 	"github.com/desertbit/grumble"
 	"github.com/sirupsen/logrus"
-	"go-web/cmd/cmd"
+	cmd2 "go-web/cmd"
 	"go-web/configs"
 )
 
@@ -12,5 +12,5 @@ func main() {
 	logrus.SetLevel(logrus.Level(configs.Get().Logger.Level))
 	logrus.Info("员工信息管理系统启动")
 	//加载grumble，初始化命令行
-	grumble.Main(cmd.Employee)
+	grumble.Main(cmd2.Employee)
 }

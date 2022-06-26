@@ -81,7 +81,7 @@ func (s *EmployeeService) List(key int, value string) {
 		//返回排序后所有员工信息
 		s.sortByKey(key)
 	} else {
-		//返回过滤后的员工信息
+		//返回按搜索内容过滤后的员工信息
 		s.queryByKey(key, value)
 	}
 }
@@ -155,6 +155,7 @@ func (s *EmployeeService) findById(id int) int {
 			index = i
 		}
 	}
+	//返回切片的index
 	return index
 }
 
