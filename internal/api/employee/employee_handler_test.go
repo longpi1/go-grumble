@@ -45,11 +45,12 @@ func Test_employeeHandler_Create(t *testing.T) {
 		c grumble.Context
 	}
 	//构建对应指令flag
-	var m =map[string]*grumble.FlagMapItem{}
-	m["name"]=&grumble.FlagMapItem{Value: "test", IsDefault: true}
-	m["startTime"]=&grumble.FlagMapItem{Value: "test", IsDefault: true}
-	m["department"]=&grumble.FlagMapItem{Value: "department", IsDefault: true}
-	m["position"]=&grumble.FlagMapItem{Value: "test", IsDefault: true}
+	var m = map[string]*grumble.FlagMapItem{}
+	m["id"] = &grumble.FlagMapItem{Value: 1, IsDefault: true}
+	m["name"] = &grumble.FlagMapItem{Value: "test", IsDefault: true}
+	m["startTime"] = &grumble.FlagMapItem{Value: "test", IsDefault: true}
+	m["department"] = &grumble.FlagMapItem{Value: "department", IsDefault: true}
+	m["position"] = &grumble.FlagMapItem{Value: "test", IsDefault: true}
 	tests := []struct {
 		name    string
 		fields  fields
@@ -63,9 +64,8 @@ func Test_employeeHandler_Create(t *testing.T) {
 			},
 			args: args{
 				c: grumble.Context{
-					Flags: m,
-                    Command: &grumble.Command{
-					},
+					Flags:   m,
+					Command: &grumble.Command{},
 				},
 			},
 			wantErr: true,
@@ -95,8 +95,8 @@ func Test_employeeHandler_Delete(t *testing.T) {
 		c grumble.Context
 	}
 	//构建对应指令flag
-	var m =map[string]*grumble.FlagMapItem{}
-	m["id"]=&grumble.FlagMapItem{Value: 1, IsDefault: true}
+	var m = map[string]*grumble.FlagMapItem{}
+	m["id"] = &grumble.FlagMapItem{Value: 1, IsDefault: true}
 	tests := []struct {
 		name    string
 		fields  fields
@@ -110,9 +110,8 @@ func Test_employeeHandler_Delete(t *testing.T) {
 			},
 			args: args{
 				c: grumble.Context{
-					Flags: m,
-					Command: &grumble.Command{
-					},
+					Flags:   m,
+					Command: &grumble.Command{},
 				},
 			},
 			wantErr: true,
@@ -141,9 +140,9 @@ func Test_employeeHandler_List(t *testing.T) {
 		c grumble.Context
 	}
 	//构建对应指令flag
-	var m =map[string]*grumble.FlagMapItem{}
-	m["key"]=&grumble.FlagMapItem{Value: 1, IsDefault: true}
-	m["value"]=&grumble.FlagMapItem{Value: "", IsDefault: true}
+	var m = map[string]*grumble.FlagMapItem{}
+	m["key"] = &grumble.FlagMapItem{Value: 1, IsDefault: true}
+	m["value"] = &grumble.FlagMapItem{Value: "", IsDefault: true}
 	tests := []struct {
 		name    string
 		fields  fields
@@ -157,9 +156,8 @@ func Test_employeeHandler_List(t *testing.T) {
 			},
 			args: args{
 				c: grumble.Context{
-					Flags: m,
-					Command: &grumble.Command{
-					},
+					Flags:   m,
+					Command: &grumble.Command{},
 				},
 			},
 		},
@@ -188,12 +186,12 @@ func Test_employeeHandler_Modify(t *testing.T) {
 		c grumble.Context
 	}
 	//构建对应指令flag
-	var m =map[string]*grumble.FlagMapItem{}
-	m["id"]=&grumble.FlagMapItem{Value: 1, IsDefault: true}
-	m["name"]=&grumble.FlagMapItem{Value: "test", IsDefault: true}
-	m["startTime"]=&grumble.FlagMapItem{Value: "test", IsDefault: true}
-	m["department"]=&grumble.FlagMapItem{Value: "department", IsDefault: true}
-	m["position"]=&grumble.FlagMapItem{Value: "test", IsDefault: true}
+	var m = map[string]*grumble.FlagMapItem{}
+	m["id"] = &grumble.FlagMapItem{Value: 1, IsDefault: true}
+	m["name"] = &grumble.FlagMapItem{Value: "test", IsDefault: true}
+	m["startTime"] = &grumble.FlagMapItem{Value: "test", IsDefault: true}
+	m["department"] = &grumble.FlagMapItem{Value: "department", IsDefault: true}
+	m["position"] = &grumble.FlagMapItem{Value: "test", IsDefault: true}
 	tests := []struct {
 		name    string
 		fields  fields
@@ -207,9 +205,8 @@ func Test_employeeHandler_Modify(t *testing.T) {
 			},
 			args: args{
 				c: grumble.Context{
-					Flags: m,
-					Command: &grumble.Command{
-					},
+					Flags:   m,
+					Command: &grumble.Command{},
 				},
 			},
 			wantErr: true,
@@ -239,8 +236,8 @@ func Test_employeeHandler_Search(t *testing.T) {
 		c grumble.Context
 	}
 	//构建对应指令flag
-	var m =map[string]*grumble.FlagMapItem{}
-	m["id"]=&grumble.FlagMapItem{Value: 1, IsDefault: true}
+	var m = map[string]*grumble.FlagMapItem{}
+	m["id"] = &grumble.FlagMapItem{Value: 1, IsDefault: true}
 	tests := []struct {
 		name    string
 		fields  fields
@@ -254,9 +251,8 @@ func Test_employeeHandler_Search(t *testing.T) {
 			},
 			args: args{
 				c: grumble.Context{
-					Flags: m,
-					Command: &grumble.Command{
-					},
+					Flags:   m,
+					Command: &grumble.Command{},
 				},
 			},
 			wantErr: true,

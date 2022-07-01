@@ -5,6 +5,7 @@ import (
 	"reflect"
 	"testing"
 )
+
 //测试创建service对象
 //@param 构建初始化的service对象
 //判断是否相等
@@ -17,13 +18,12 @@ func TestNew(t *testing.T) {
 			"test",
 			&EmployeeService{
 				nil,
-				0,
 			},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := New(); !reflect.DeepEqual(got, tt.want){
+			if got := New(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("New() = %v, want %v", got, tt.want)
 			}
 		})
@@ -35,8 +35,7 @@ func TestNew(t *testing.T) {
 //判断是否相等
 func Test_employeeService_SearchById(t *testing.T) {
 	type fields struct {
-		employeeList []employee.Employee
-		employeeId   int
+		employeeMap map[int]*employee.Employee
 	}
 	type args struct {
 		id int
@@ -49,13 +48,13 @@ func Test_employeeService_SearchById(t *testing.T) {
 	}{
 		{
 			"test",
-			fields{[]employee.Employee{{1,"test", "2022-01-22","test", "test"}},1},
+			fields{map[int]*employee.Employee{1: {Id: 1, Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}}},
 			args{id: 1},
 			true,
 		},
 		{
 			"test",
-			fields{[]employee.Employee{{1,"test", "2022-01-22","test", "test"}},1},
+			fields{map[int]*employee.Employee{1: {Id: 1, Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}}},
 			args{id: 2},
 			false,
 		},
@@ -63,8 +62,7 @@ func Test_employeeService_SearchById(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &EmployeeService{
-				employeeList: tt.fields.employeeList,
-				employeeId:   tt.fields.employeeId,
+				employeeMap: tt.fields.employeeMap,
 			}
 			if got := s.SearchById(tt.args.id); got != tt.want {
 				t.Errorf("SearchById() = %v, want %v", got, tt.want)
@@ -73,14 +71,12 @@ func Test_employeeService_SearchById(t *testing.T) {
 	}
 }
 
-
 //测试修改员工信息
 //@param 构建员工实体类 员工id
 //判断是否相等
 func Test_employeeService_Modify(t *testing.T) {
 	type fields struct {
-		employeeList []employee.Employee
-		employeeId   int
+		employeeMap map[int]*employee.Employee
 	}
 	type args struct {
 		id           int
@@ -94,13 +90,13 @@ func Test_employeeService_Modify(t *testing.T) {
 	}{
 		{
 			name:   "test",
-			fields: fields{[]employee.Employee{{1,"2022-01-22","test", "test", "test"}},1},
+			fields: fields{map[int]*employee.Employee{1: {Id: 1, Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}}},
 			args:   args{id: 1, employeeDate: &employee.EmployeeVo{Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}},
 			want:   true,
 		},
 		{
 			name:   "test",
-			fields: fields{[]employee.Employee{{1,"2022-01-22","test", "test", "test"}},1},
+			fields: fields{map[int]*employee.Employee{1: {Id: 1, Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}}},
 			args:   args{id: 2, employeeDate: &employee.EmployeeVo{Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}},
 			want:   false,
 		},
@@ -108,8 +104,7 @@ func Test_employeeService_Modify(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &EmployeeService{
-				employeeList: tt.fields.employeeList,
-				employeeId:   tt.fields.employeeId,
+				employeeMap: tt.fields.employeeMap,
 			}
 			if got := s.Modify(tt.args.id, tt.args.employeeDate); got != tt.want {
 				t.Errorf("Modify() = %v, want %v", got, tt.want)
@@ -118,14 +113,12 @@ func Test_employeeService_Modify(t *testing.T) {
 	}
 }
 
-
 //测试创建员工
 //@param 构建员工实体类
 //判断员工是否递增
 func Test_employeeService_Create(t *testing.T) {
 	type fields struct {
-		employeeList []employee.Employee
-		employeeId   int
+		employeeMap map[int]*employee.Employee
 	}
 	type args struct {
 		employeeDate *employee.EmployeeVo
@@ -137,19 +130,16 @@ func Test_employeeService_Create(t *testing.T) {
 	}{
 		{
 			name:   "test",
-			fields: fields{[]employee.Employee{{1,"test","2022-01-22", "test", "test"}},1},
+			fields: fields{map[int]*employee.Employee{1: {Id: 1, Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}}},
 			args:   args{employeeDate: &employee.EmployeeVo{Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &EmployeeService{
-				employeeList: tt.fields.employeeList,
-				employeeId:   tt.fields.employeeId,
+				employeeMap: tt.fields.employeeMap,
 			}
-			if s.Create(tt.args.employeeDate); s.employeeId != 2 {
-				t.Errorf("创建失败：%d",s.employeeId  )
-			}
+			s.Create(tt.args.employeeDate)
 
 		})
 	}
@@ -160,8 +150,7 @@ func Test_employeeService_Create(t *testing.T) {
 //判断是否删除
 func Test_employeeService_Delete(t *testing.T) {
 	type fields struct {
-		employeeList []employee.Employee
-		employeeId   int
+		employeeMap map[int]*employee.Employee
 	}
 	type args struct {
 		id int
@@ -174,13 +163,13 @@ func Test_employeeService_Delete(t *testing.T) {
 	}{
 		{
 			"test",
-			fields{[]employee.Employee{{1,"test","2022-01-22","test", "test"}},1},
+			fields{map[int]*employee.Employee{1: {Id: 1, Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}}},
 			args{id: 1},
 			true,
 		},
 		{
 			"test",
-			fields{[]employee.Employee{{1,"test","2022-01-22","test", "test"}},1},
+			fields{map[int]*employee.Employee{1: {Id: 1, Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}}},
 			args{id: 2},
 			false,
 		},
@@ -188,8 +177,7 @@ func Test_employeeService_Delete(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &EmployeeService{
-				employeeList: tt.fields.employeeList,
-				employeeId:   tt.fields.employeeId,
+				employeeMap: tt.fields.employeeMap,
 			}
 			if got := s.Delete(tt.args.id); got != tt.want {
 				t.Errorf("Delete() = %v, want %v", got, tt.want)
@@ -203,8 +191,7 @@ func Test_employeeService_Delete(t *testing.T) {
 //判断输出是否相同
 func Test_employeeService_List(t *testing.T) {
 	type fields struct {
-		employeeList []employee.Employee
-		employeeId   int
+		employeeMap map[int]*employee.Employee
 	}
 	type args struct {
 		key   int
@@ -217,57 +204,46 @@ func Test_employeeService_List(t *testing.T) {
 	}{
 		{
 			"test",
-			fields{[]employee.Employee{{1,"test","2022-01-22", "test",
-				"test"},{2,"test1","2022-01-22", "test", "test"}},2},
-			args{1,""},
+			fields{map[int]*employee.Employee{1: {Id: 1, Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}}},
+			args{1, ""},
 		},
 		{
 			"test",
-			fields{[]employee.Employee{{1,"test","2022-01-22", "test",
-				"test"},{2,"test1","2022-01-22", "test", "test"}},2},
-
-			args{2,"test"},
+			fields{map[int]*employee.Employee{1: {Id: 1, Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}}},
+			args{2, "test"},
 		},
 		{
 			"test",
-			fields{[]employee.Employee{{1,"test","2022-01-22", "test",
-				"test"},{2,"test1","2022-01-22", "test", "test"}},2},
-
-			args{3,"test"},
+			fields{map[int]*employee.Employee{1: {Id: 1, Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}}},
+			args{3, "test"},
 		},
 		{
 			"test",
-			fields{[]employee.Employee{{1,"test","2022-01-22", "test",
-				"test"},{2,"test1","2022-01-22", "test", "test"}},2},
-			args{4,"test"},
+			fields{map[int]*employee.Employee{1: {Id: 1, Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}}},
+			args{4, "test"},
 		},
 		{
 			"test",
-			fields{[]employee.Employee{{1,"test","2022-01-22", "test",
-				"test"},{2,"test1","2022-01-22", "test", "test"}},2},
-			args{5,""},
+			fields{map[int]*employee.Employee{1: {Id: 1, Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}}},
+			args{5, ""},
 		},
 		{
 			"test",
-			fields{[]employee.Employee{{1,"test","2022-01-22", "test",
-				"test"},{2,"test1","2022-01-22", "test", "test"}},2},
-			args{6,""},
+			fields{map[int]*employee.Employee{1: {Id: 1, Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}}},
+			args{6, ""},
 		},
 		{
 			"test",
-			fields{[]employee.Employee{{1,"test","2022-01-22", "test",
-				"test"},{2,"test1","2022-01-22", "test", "test"}},2},
-			args{7,""},
+			fields{map[int]*employee.Employee{1: {Id: 1, Name: "test", StartTime: "2022-01-22", Department: "test", Position: "test"}}},
+			args{7, ""},
 		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			s := &EmployeeService{
-				employeeList: tt.fields.employeeList,
-				employeeId:   tt.fields.employeeId,
+				employeeMap: tt.fields.employeeMap,
 			}
-			s.List(tt.args.key,tt.args.value)
+			s.List(tt.args.key, tt.args.value)
 		})
 	}
 }
-

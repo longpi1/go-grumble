@@ -8,68 +8,58 @@ import (
 	"sort"
 )
 
-//创建员工信息，id自增
+//创建员工信息
 func (s *EmployeeService) Create(employeeDate *employee.EmployeeVo) {
 	user := employee.Employee{
+		Id:         employeeDate.Id,
 		Name:       employeeDate.Name,
 		StartTime:  employeeDate.StartTime,
 		Department: employeeDate.Department,
 		Position:   employeeDate.Position,
 	}
-	//id自增
-	s.employeeId++
-	user.Id = s.employeeId
-	//添加该用户到切片集合中
-	s.employeeList = append(s.employeeList, user)
+	//添加该员工到map集合中
+	s.employeeMap[employeeDate.Id] = &user
 }
 
 //根据id删除员工信息
 func (s *EmployeeService) Delete(id int) bool {
-	index := s.findById(id)
-	//返回-1则表示员工不存在
-	if index == -1 {
+	_, ok := s.employeeMap[id]
+	//返回false则表示员工不存在
+	if !ok {
 		return false
 	}
-	//实现从用户切片中删除一个元素
-	s.employeeList = append(s.employeeList[:s.employeeList[index].Id-1], s.employeeList[s.employeeList[index].Id:]...)
+	//实现从员工map中删除一个元素
+	delete(s.employeeMap, id)
 	fmt.Println("----------删除成功----------")
 	return true
 }
 
 //根据id更新员工信息
 func (s *EmployeeService) Modify(id int, employeeDate *employee.EmployeeVo) bool {
-	index := s.findById(id)
-	if index == -1 {
-		//index为-1则表示不存在，返回false
+	e, ok := s.employeeMap[id]
+	if !ok {
 		return false
 	}
 	//将实体数据传输给存储类
-	s.employeeList[index].Name = employeeDate.Name
-	s.employeeList[index].Department = employeeDate.Department
-	s.employeeList[index].Position = employeeDate.Position
-	s.employeeList[index].StartTime = employeeDate.StartTime
-	//实现从用户切片中更新一个元素
-	s.employeeList = append(append(s.employeeList[:s.employeeList[index].Id-1], s.employeeList[index]), s.employeeList[s.employeeList[index].Id:]...)
+	e.Name = employeeDate.Name
+	e.Department = employeeDate.Department
+	e.Position = employeeDate.Position
+	e.StartTime = employeeDate.StartTime
+	//实现从用户map中更新一个元素
+	s.employeeMap[id] = e
 	fmt.Println("----------修改成功----------")
-	return true
+	return ok
 }
 
 //根据id搜索员工信息
 func (s *EmployeeService) SearchById(id int) bool {
-	//默认为-1
-	index := -1
-	for i := 0; i < len(s.employeeList); i++ {
-		if s.employeeList[i].Id == id {
-			index = i
-		}
-	}
-	if index != -1 {
-		//存在则打印员工信息，返回true
+	e, ok := s.employeeMap[id]
+	if ok {
+		//存在则打印员工信息
 		fmt.Println("工号\t姓名\t入职时间\t部门\t职位")
-		fmt.Println(s.employeeList[index].GetInfo())
-		return true
+		fmt.Println(e.GetInfo())
 	}
-	return false
+	return ok
 }
 
 //遍历员工信息
@@ -89,81 +79,77 @@ func (s *EmployeeService) List(key int, value string) {
 //返回所有员工信息
 func (s *EmployeeService) queryAll() {
 	//打印员工信息
-	s.printEmployeeList(s.employeeList)
+	s.printEmployeeList(s.employeeMap)
 }
 
 //返回排序后所有员工信息
 func (s *EmployeeService) sortByKey(key int) {
-	//将目前的用户切片集合赋值给ret
-	ret := s.employeeList
 	switch key {
 	//按工号排序
 	case configs.SortById:
-		//进行升序 i小于j 为升序
-		sort.Slice(ret, func(i, j int) bool {
-			return ret[i].Id < ret[j].Id
-		})
+		//进行升序
+		var ids []int
+		for id := range s.employeeMap {
+			//将键按顺序存储在slice中
+			ids = append(ids, id)
+		}
+		sort.Ints(ids)
+		for _, id := range ids {
+			//打印排序后的信息
+			fmt.Println(s.employeeMap[id].GetInfo())
+		}
 	//按入职日期排序
 	case configs.SortByTime:
+		var employeeList []*employee.Employee
+		for _, e := range s.employeeMap {
+			//将value存储在slice中
+			employeeList = append(employeeList, e)
+		}
 		//进行升序
-		sort.Slice(ret, func(i, j int) bool {
-			return ret[i].StartTime < ret[j].StartTime
+		sort.Slice(employeeList, func(i, j int) bool {
+			return employeeList[i].StartTime < employeeList[j].StartTime
 		})
+		for _, e := range employeeList {
+			//打印排序后的信息
+			fmt.Println(e.GetInfo())
+		}
 	}
-	//打印员工信息
-	s.printEmployeeList(ret)
 }
 
 //返回过滤后的员工信息
 func (s *EmployeeService) queryByKey(key int, value string) {
-	var ret []employee.Employee
 	switch key {
 	//按姓名过滤
 	case configs.QueryByName:
-		for _, val := range s.employeeList {
+		for _, val := range s.employeeMap {
 			if val.Name == value {
-				ret = append(ret, val)
+				fmt.Println(val.GetInfo())
 			}
 		}
 	//按部门过滤
 	case configs.QueryByDepartment:
-		for _, val := range s.employeeList {
+		for _, val := range s.employeeMap {
 			if val.Department == value {
-				ret = append(ret, val)
+				fmt.Println(val.GetInfo())
 			}
 		}
 	//按职位过滤
 	case configs.QueryByPosition:
-		for _, val := range s.employeeList {
+		for _, val := range s.employeeMap {
 			if val.Position == value {
-				ret = append(ret, val)
+				fmt.Println(val.GetInfo())
 			}
 		}
 	default:
 		_ = fmt.Errorf("请输入正确的类型:%d", key)
 	}
-	//打印员工信息
-	s.printEmployeeList(ret)
-}
-
-//根据ID查找客户在员工中对应下标，如果没有该员工，返回-1
-func (s *EmployeeService) findById(id int) int {
-	index := -1
-	//遍历员工 切片
-	for i := 0; i < len(s.employeeList); i++ {
-		if s.employeeList[i].Id == id {
-			index = i
-		}
-	}
-	//返回切片的index
-	return index
 }
 
 //打印员工信息
-func (s *EmployeeService) printEmployeeList(employeeList []employee.Employee){
+func (s *EmployeeService) printEmployeeList(employeeMap map[int]*employee.Employee) {
 	fmt.Println("----------员工列表----------")
 	fmt.Println("工号\t姓名\t入职时间\t部门\t职位")
-	for i := 0; i < len(employeeList); i++ {
-		fmt.Println(employeeList[i].GetInfo())
+	for id := range employeeMap {
+		fmt.Println(employeeMap[id].GetInfo())
 	}
 }

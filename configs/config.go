@@ -3,7 +3,6 @@ package configs
 import (
 	"bytes"
 
-	_ "embed"
 	"github.com/fsnotify/fsnotify"
 	"go-web/pkg/env"
 	"go-web/pkg/file"

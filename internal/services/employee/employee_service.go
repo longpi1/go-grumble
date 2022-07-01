@@ -8,10 +8,8 @@ var _ Service = (*EmployeeService)(nil)
 
 //定义employeeService，完成对employee的增删查改
 type EmployeeService struct {
-	//用切片对员工信息进行存储
-	employeeList []employee.Employee
-	//表示当前切片含有多少个员工，以及作为新员工的id号
-	employeeId int
+	//用map对员工信息进行存储
+	employeeMap map[int]*employee.Employee
 }
 
 //定义用户service层接口
@@ -48,7 +46,7 @@ type Service interface {
 }
 
 func New() Service {
-	return &EmployeeService{}
+	return &EmployeeService{
+		employeeMap: make(map[int]*employee.Employee),
+	}
 }
-
-

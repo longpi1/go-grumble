@@ -16,8 +16,8 @@ const (
 	//根据id查找员工
 	SearchEmployeeById = "search"
 
-	//退出系统
-	Exit = "exit"
+	//默认值
+	DefaultNum = -1
 
 	//按工号排序
 	SortById = 5

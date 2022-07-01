@@ -20,7 +20,7 @@ type employeeHandler struct {
 type Handler interface {
 	// @title    Create 创建员工
 	// @return    error   “错误信息”
-	Create(c grumble.Context)  error
+	Create(c grumble.Context) error
 
 	// @title    search 通过id获取员工详情
 	// @return    error   “错误信息”
@@ -28,15 +28,15 @@ type Handler interface {
 
 	// @title    Delete 根据id删除员工
 	// @return    error   “错误信息”
-	Delete(c grumble.Context)  error
+	Delete(c grumble.Context) error
 
 	// @title List 返回符合要求的员工列表
 	// @return    error   “错误信息”
-	List(c grumble.Context)  error
+	List(c grumble.Context) error
 
 	// @title Modify 根据id修改员工信息
 	// @return    error   “错误信息”
-	Modify(c grumble.Context)  error
+	Modify(c grumble.Context) error
 }
 
 //创建Handler对象
@@ -46,7 +46,11 @@ func New() Handler {
 	}
 }
 
-func (h *employeeHandler) Create(c grumble.Context)  error{
+func (h *employeeHandler) Create(c grumble.Context) error {
+	id := c.Flags.Int("id")
+	if h.employeeService.SearchById(id) {
+		return fmt.Errorf("该id已存在，id:%d", id)
+	}
 	name := c.Flags.String("name")
 	if c.Flags.String("name") == "" {
 		return fmt.Errorf("请输入员工名称")
@@ -55,12 +59,12 @@ func (h *employeeHandler) Create(c grumble.Context)  error{
 	department := c.Flags.String("department")
 	position := c.Flags.String("position")
 	//先构建员工传输对象
-	employeeDate := employee2.NewEmployeeVo(name, startTime, department, position)
+	employeeDate := employee2.NewEmployeeVo(id, name, startTime, department, position)
 	h.employeeService.Create(&employeeDate)
 	return nil
 }
 
-func (h *employeeHandler) Search(c grumble.Context) error{
+func (h *employeeHandler) Search(c grumble.Context) error {
 	id := c.Flags.Int("id")
 	if !h.employeeService.SearchById(id) {
 		return fmt.Errorf("该用户不存在，id:%d", id)
@@ -68,15 +72,15 @@ func (h *employeeHandler) Search(c grumble.Context) error{
 	return nil
 }
 
-func (h *employeeHandler) Delete(c grumble.Context) error{
+func (h *employeeHandler) Delete(c grumble.Context) error {
 	id := c.Flags.Int("id")
 	if !h.employeeService.Delete(id) {
 		return fmt.Errorf("删除失败,id:%d不存在", id)
 	}
-    return nil
+	return nil
 }
 
-func (h *employeeHandler) List(c grumble.Context) error{
+func (h *employeeHandler) List(c grumble.Context) error {
 	key := c.Flags.Int("key")
 	//查看输入的key是否在查找类型范围
 	isRange := key <= configs.SortByTime && key >= configs.QueryAll
@@ -88,18 +92,16 @@ func (h *employeeHandler) List(c grumble.Context) error{
 	return nil
 }
 
-func (h *employeeHandler) Modify(c grumble.Context) error{
+func (h *employeeHandler) Modify(c grumble.Context) error {
 	id := c.Flags.Int("id")
 	name := c.Flags.String("name")
 	startTime := c.Flags.String("startTime")
 	department := c.Flags.String("department")
 	position := c.Flags.String("position")
 	//先构建员工传输对象
-	employeeDate := employee2.NewEmployeeVo(name, startTime, department, position)
+	employeeDate := employee2.NewEmployeeVo(id, name, startTime, department, position)
 	if !h.employeeService.Modify(id, &employeeDate) {
 		return fmt.Errorf("修改失败,id:%d不存在", id)
 	}
 	return nil
 }
-
-
